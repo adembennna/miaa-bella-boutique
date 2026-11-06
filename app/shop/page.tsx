@@ -1,0 +1,11 @@
+import Link from "next/link";
+import {getPublishedProducts} from "@/lib/products";
+const fallback=[
+{id:"1",name:"The Sofia Heel",category:"Shoes",price:8900,image_url:"https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=900&q=85",tag:"NEW"},
+{id:"2",name:"Bella Mini Bag",category:"Bags",price:12500,image_url:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=85",tag:"BESTSELLER"},
+{id:"3",name:"Golden Hour Sandal",category:"Shoes",price:7600,image_url:"https://images.unsplash.com/photo-1560343090-f0409e92791a?auto=format&fit=crop&w=900&q=85",tag:""},
+{id:"4",name:"The Luna Bag",category:"Bags",price:14900,image_url:"https://images.unsplash.com/photo-1590870488-7b9b4b1b4c9d?auto=format&fit=crop&w=900&q=85",tag:"NEW"}];
+export default async function Shop(){
+ const live=await getPublishedProducts();const products:any[]=live&&live.length?live:fallback;
+ return <main className="min-h-screen bg-[#f8f5ef]"><header className="bg-black text-white px-6 py-5 flex justify-between"><Link href="/" className="font-serif tracking-widest">MIA BELLA <span className="text-gold">BOUTIQUE</span></Link><Link href="/cart" className="text-xs uppercase tracking-widest">Shopping bag →</Link></header><section className="max-w-7xl mx-auto px-5 py-14"><p className="text-gold tracking-[.3em] text-xs uppercase">The collection</p><h1 className="font-serif text-5xl mt-3">Shop all</h1><p className="text-sm text-black/50 mt-4">A considered collection of shoes and bags.</p><div className="grid grid-cols-2 md:grid-cols-3 gap-5 mt-10">{products.map(p=><Link href={`/product/${p.id}`} key={p.id} className="group"><div className="relative aspect-[.78] overflow-hidden bg-[#e8e1d6]"><img src={p.image_url||p.img||"/placeholder.png"} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" alt={p.name}/>{(p.tag||p.is_featured)&&<span className="absolute top-3 left-3 bg-white px-2 py-1 text-[9px] tracking-widest">{p.tag||"FEATURED"}</span>}</div><p className="text-[9px] uppercase tracking-widest text-black/45 mt-4">{p.category||p.cat}</p><h2 className="font-serif text-xl mt-1">{p.name}</h2><p className="text-sm mt-2">{Number(p.sale_price||p.price).toLocaleString()} DZD</p></Link>)}</div></section></main>
+}
